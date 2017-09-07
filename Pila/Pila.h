@@ -1,7 +1,6 @@
 #ifndef PILA_H
 #define PILA_H
 
-#include <iostream>
 #include "Nodo.h"
 
 template<class T>
@@ -46,7 +45,7 @@ template<class T>
 T Pila<T>::pop() {
     if (inicio == NULL) throw 1;
     T dato = inicio->getDato();
-    Nodo<T> *aux = inicio;
+    Nodo<T>* aux = inicio;
     inicio = inicio->getNext();
     delete aux;
     return dato;
