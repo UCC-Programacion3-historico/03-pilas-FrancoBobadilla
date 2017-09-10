@@ -19,6 +19,8 @@ public:
     bool esVacia();
 
     T peek();
+
+    bool insertAfter(T newDato, int n, T oldDato);
 };
 
 
@@ -45,7 +47,7 @@ template<class T>
 T Pila<T>::pop() {
     if (inicio == NULL) throw 1;
     T dato = inicio->getDato();
-    Nodo<T>* aux = inicio;
+    Nodo<T> *aux = inicio;
     inicio = inicio->getNext();
     delete aux;
     return dato;
@@ -63,5 +65,21 @@ T Pila<T>::peek() {
     if (inicio == NULL) throw 1;
     return inicio->getDato();
 }
+
+template<class T>
+bool Pila<T>::insertAfter(T newValue, int n, T oldValue) {
+    if (n == 0)push(newValue);
+    Nodo<T> *aux = inicio;
+    while (aux != NULL) {
+        if (aux->getDato() == oldValue)n--;
+        if (n == 0) {
+            aux->setNext(new Nodo<T>(newValue, aux->getNext()));
+            return true;
+        }
+        aux = aux->getNext();
+    }
+    return false;
+}
+
 
 #endif //PILA_H
