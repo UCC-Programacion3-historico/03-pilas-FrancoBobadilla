@@ -7,77 +7,43 @@ using namespace std;
 bool comprobar(Pila<char> *, char);
 
 int main() {
-
     Pila<char> pila;
     string formula;
-    bool bandera;
-
     cout << endl << "Ingrese forumla a comprobar ('~' para salir)" << endl;
     cin >> formula;
-
     int fin = formula.length();
     pila.push('~');
     for (int i = 0; i < fin; i++) {
-        if (formula[i] == '~')return 0;
+        if (formula[i] == '~')return 1;
         pila.push(formula[i]);
     }
-    //Pila<char> copia(pila);
     if (comprobar(&pila, '~')) cout << endl << "Formula balanceada" << endl;
     else cout << endl << "Formula desbalanceada" << endl;
-
     main();
     return 0;
 }
 
 bool comprobar(Pila<char> *pila, char hasta) {
-    bool bandera = true;
-    do {
-        switch (pila->pop()) {
-
-
-            case '(': {
-                if (hasta != '(')
-                    return false;
-                break;
-            }
-            case '[': {
-                if (hasta == '[')
-                    bandera = true;
-                else
-                    return false;
-                break;
-            }
-            case '{': {
-                if (hasta == '{')
-                    bandera = true;
-                else
-                    return false;
-                break;
-            }
-
-
+    while (!pila->esVacia()) {
+        char caracter = pila->pop();
+        if (caracter == hasta)return true;
+        if(caracter=='('||caracter=='['||caracter=='{'||caracter=='~')return false;
+        switch (caracter) {
             case ')': {
-                if (comprobar(pila, '('))
-                    return true;
-                return false;
+                if (!comprobar(pila, '('))return false;
+                break;
             }
             case ']': {
-                if (comprobar(pila, '['))
-                    return true;
-                return false;
+                if (!comprobar(pila, '['))return false;
+                break;
             }
             case '}': {
-                if (comprobar(pila, '{'))
-                    return true;
-                return false;
+                if (!comprobar(pila, '{'))return false;
+                break;
             }
-
-
-            default: {
-                if (comprobar(pila, hasta))
-                    return true;
-                return false;
-            }
+            default:
+                return comprobar(pila, hasta);
         }
-    } while (bandera == true);
+    }
+    return false;
 }
